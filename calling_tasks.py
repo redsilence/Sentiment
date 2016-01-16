@@ -1,8 +1,57 @@
 import threading
 from getSentiment import *
+import re
 
 tsk={}
 t={}
+
+for i,line in enumerate( open('Raw_Tweets.txt')):
+    print(i)
+    phrases=re.split('@|:|/|\.|;|', line)
+    for j in range(len(phrases)):
+        a = getSentiment(str(phrases[j]))
+        print a
+
+'''
+for i,line in enumerate( open('Raw_Tweets.txt')):
+    print(i)
+    phrases=re.split('@|:|/|\.|;|', line)
+    print("length=",len(phrases))
+    for i in range(len(phrases)):
+        def task(i):
+            a = getSentiment(str(phrases[i]))
+            print a
+        tsk[i] = task
+
+    print("Done definition")
+
+    def tsks():
+        for i in range(len(phrases)):
+            #from IPython import embed
+            #embed()
+            t[i] = threading.Thread(target=tsk[i], args=[i])
+
+        print("Done tasks definitions")
+        for i in range(len(phrases)):
+            print(phrases[i])
+            t[i].start()
+            #print("Started i")
+
+        for i in range(len(phrases)):
+            t[i].join()
+            #print("Joined i")
+
+
+    ca = threading.Thread(target=tsks)
+    ca.start()
+    ca.join()
+    break
+
+
+
+'''
+
+'''
 tt=['abc us hhj','hjkk iid fgh','i am happy','abc us hhj','hjkk iid fgh','i am happy','abc us hhj','hjkk iid fgh','i am happy','what is this','abc us hhj','hjkk iid fgh','i am happy','abc us hhj','hjkk iid fgh','i am happy','abc us hhj','hjkk iid fgh','i am happy','what is this']
 
 
@@ -35,9 +84,9 @@ ca.start()
 ca.join()
 
 
+exit
 
-
-
+'''
 
 
 '''

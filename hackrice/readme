@@ -1,0 +1,4 @@
+This is a user sentiment detection tool. There nare three process in our code:
+1. Get live feed from twitter. Code: pollTwitter.py
+2. Seperate the data in training data nad test data. Training data should have positive or negative word appended at the end. The data already generated are training_data_microsoft and Raw_Tweets_Microsoft.txt
+3. Run code to predict sentiment on a scale of -3 to 3. Run code: python ../getSentiment2.py --tweet Raw_Tweets_Microsoft.txt --train training_data_microsoft

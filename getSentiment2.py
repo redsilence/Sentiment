@@ -1,48 +1,23 @@
 import nltk
 import numpy
 import re
+import numpy as np
 
-tweets = []
-for line in open('training_data.txt'):
-    words=re.split(' ',line)
-    print(words[0:len(words)-1])
-    sent=words[-1].rstrip(' \n')
-    print(sent)
-    wds = words[0:len(words)-1]
-    #from IPython import embed
-    #embed()
-    f= [e.lower() for e in wds if len(e) >= 3]
-    print(f)
-    print('Done')
-    tweets.append((f, sent))
+def find_ones(a):
+    b=np.asarray(a)
+    c=np.where(b==1)
+    return(len(c[0]))
 
-pos_tweets = [('I love this car', 'positive'),
-              ('I like this car', 'positive'),
-              ('This view is amazing', 'positive'),
-              ('I feel great this morning', 'positive'),
-              ('I am so excited about the concert', 'positive'),
-              ('He is my best friend', 'positive')]
 
-neg_tweets = [('I do not like this car', 'negative'),
-              ('This view is horrible', 'negative'),
-              ('I feel tired this morning', 'negative'),
-              ('I am not looking forward to the concert', 'negative'),
-              ('he is a bad person', 'negative'),
-              ('He is my enemy', 'negative')]
+def file_len(fname):
+    with open(fname) as f:
+        for i, l in enumerate(f):
+            pass
+    return i + 1
 
-#tweets = []
-#for (words, sentiment) in pos_tweets + neg_tweets:
-#    words_filtered = [e.lower() for e in words.split() if len(e) >= 3]
-#    tweets.append((words_filtered, sentiment))
 
-#test_tweets = [
-#    (['feel', 'happy', 'this', 'morning'], 'positive'),
-#    (['larry', 'friend'], 'positive'),
-#    (['not', 'like', 'that', 'man'], 'negative'),
-#    (['house', 'not', 'great'], 'negative'),
-#    (['your', 'song', 'annoying'], 'negative')]
+f = file_len('training_data.txt')/2
 
-#word_features = get_word_features(get_words_in_tweets(tweets))
 def get_words_in_tweets(tweets):
     all_words = []
     for (words, sentiment) in tweets:
@@ -61,37 +36,123 @@ def extract_features(document):
         features['contains(%s)' % word] = (word in document_words)
     return features
 
+tweets = []
+for i,line in enumerate(open('training_data.txt')):
+    if i<f:
+    	words=re.split(' ',line)
+    	#print(words[0:len(words)-1])
+    	sent=words[-1].rstrip(' \n')
+    	#print(sent)
+    	wds = words[0:len(words)-1]
+    	#from IPython import embed
+    	#embed()
+    	f= [e.lower() for e in wds if len(e) >= 3]
+    	#print(f)
+    	#print('Done')
+    	tweets.append((f, sent))
+
 word_features = get_word_features(get_words_in_tweets(tweets))
-
 training_set = nltk.classify.apply_features(extract_features, tweets)
-
 classifier = nltk.NaiveBayesClassifier.train(training_set)
-
-'''
-def train(labeled_featuresets, estimator=ELEProbDist):
-    # Create the P(label) distribution
-    label_freqdist = extract_features(document)
-    label_probdist = estimator(label_freqdist)
-    # Create the P(fval|label, fname) distribution
-    feature_probdist = {}
-    return NaiveBayesClassifier(label_probdist, feature_probdist)
-
-#print label_probdist.prob('positive')
-#print label_probdist.prob('negative')
-#
-#print feature_probdist
-#
-#print feature_probdist[('negative', 'contains(best)')].prob(True)
-'''
-
-#tweet = 'i like this car'
-#tweet = 'he is my enemy'
-tweet = 'he good'
-tweet = 'Got Donald Trump toilet paper so I can finally wipe my ass with Donald Trump'
-print classifier.classify(extract_features(tweet.split()))
-
-
+n_pos=[]
 for line in open('Raw_Tweets.txt'):
-    print('Line is: ',line)
-    print classifier.classify(extract_features(line.split()))
+    #print('Line is: ',line)
+    out = classifier.classify(extract_features(line.split()))
+    #print(out)
+    if out == "positive":
+        n_pos.append(1)
+    else:
+        n_pos.append(-1)
+
+ff = file_len('Raw_Tweets.txt')
+#print("Positives = ",n_pos)
+print("total nos= ",ff)
+print(find_ones(n_pos))
+
+
+
+
+# starting second round
+
+
+#del(training_set)
+#del(classifier)
+#del(word_features)
+f = file_len('training_data.txt')/2
+
+#print(f)
+
+tweets = []
+for i,line in enumerate(open('training_data.txt')):
+    #print(i,f)
+    if i>f:
+    	words=re.split(' ',line)
+    	#print(i,f,words[0:len(words)-1])
+    	sent=words[-1].rstrip(' \n')
+    	#print(sent)
+    	wds = words[0:len(words)-1]
+    	#from IPython import embed
+    	#embed()
+    	ff= [e.lower() for e in wds if len(e) >= 3]
+    	#print(f)
+    	#print('Done')
+    	tweets.append((ff, sent))
+
+word_features = get_word_features(get_words_in_tweets(tweets))
+training_set = nltk.classify.apply_features(extract_features, tweets)
+classifier = nltk.NaiveBayesClassifier.train(training_set)
+n_pos=[]
+for line in open('Raw_Tweets.txt'):
+    #print('Line is: ',line)
+    out = classifier.classify(extract_features(line.split()))
+    #print(out)
+    if out == "positive":
+        n_pos.append(1)
+    else:
+        n_pos.append(-1)
+
+ff = file_len('Raw_Tweets.txt')
+#print("Positives = ",n_pos)
+print("total nos= ",ff)
+print(find_ones(n_pos))
+
+
+# starting third round
+
+f = file_len('training_data.txt')/2
+
+#print(f)
+
+tweets = []
+for i,line in enumerate(open('training_data.txt')):
+    #print(i,f)
+    words=re.split(' ',line)
+    #print(i,f,words[0:len(words)-1])
+    sent=words[-1].rstrip(' \n')
+    #print(sent)
+    wds = words[0:len(words)-1]
+    #from IPython import embed
+    #embed()
+    ff= [e.lower() for e in wds if len(e) >= 3]
+    #print(f)
+    #print('Done')
+    tweets.append((ff, sent))
+
+word_features = get_word_features(get_words_in_tweets(tweets))
+training_set = nltk.classify.apply_features(extract_features, tweets)
+classifier = nltk.NaiveBayesClassifier.train(training_set)
+n_pos=[]
+for line in open('Raw_Tweets.txt'):
+    #print('Line is: ',line)
+    out = classifier.classify(extract_features(line.split()))
+    #print(out)
+    if out == "positive":
+        n_pos.append(1)
+    else:
+        n_pos.append(-1)
+
+ff = file_len('Raw_Tweets.txt')
+#print("Positives = ",n_pos)
+print("total nos= ",ff)
+print(find_ones(n_pos))
 

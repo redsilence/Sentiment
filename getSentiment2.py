@@ -2,6 +2,14 @@ import nltk
 import numpy
 import re
 import numpy as np
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--train", help="train")
+parser.add_argument("--tweet", help="tweet")
+args = parser.parse_args()
+
 
 def find_ones(a):
     b=np.asarray(a)
@@ -16,7 +24,7 @@ def file_len(fname):
     return i + 1
 
 
-f = file_len('training_data.txt')/2
+f = file_len(args.train)/2
 
 def get_words_in_tweets(tweets):
     all_words = []
@@ -37,7 +45,7 @@ def extract_features(document):
     return features
 
 tweets = []
-for i,line in enumerate(open('training_data.txt')):
+for i,line in enumerate(open(args.train)):
     if i<f:
     	words=re.split(' ',line)
     	#print(words[0:len(words)-1])
@@ -55,7 +63,7 @@ word_features = get_word_features(get_words_in_tweets(tweets))
 training_set = nltk.classify.apply_features(extract_features, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 n_pos=[]
-for line in open('Raw_Tweets.txt'):
+for line in open(args.tweet):
     #print('Line is: ',line)
     out = classifier.classify(extract_features(line.split()))
     #print(out)
@@ -64,7 +72,7 @@ for line in open('Raw_Tweets.txt'):
     else:
         n_pos.append(-1)
 
-ff = file_len('Raw_Tweets.txt')
+ff = file_len(args.tweet)
 #print("Positives = ",n_pos)
 print("total nos= ",ff)
 print(find_ones(n_pos))
@@ -78,12 +86,12 @@ print(find_ones(n_pos))
 #del(training_set)
 #del(classifier)
 #del(word_features)
-f = file_len('training_data.txt')/2
+f = file_len(args.train)/2
 
 #print(f)
 
 tweets = []
-for i,line in enumerate(open('training_data.txt')):
+for i,line in enumerate(open(args.train)):
     #print(i,f)
     if i>f:
     	words=re.split(' ',line)
@@ -102,7 +110,7 @@ word_features = get_word_features(get_words_in_tweets(tweets))
 training_set = nltk.classify.apply_features(extract_features, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 n_pos=[]
-for line in open('Raw_Tweets.txt'):
+for line in open(args.tweet):
     #print('Line is: ',line)
     out = classifier.classify(extract_features(line.split()))
     #print(out)
@@ -111,7 +119,7 @@ for line in open('Raw_Tweets.txt'):
     else:
         n_pos.append(-1)
 
-ff = file_len('Raw_Tweets.txt')
+ff = file_len(args.tweet)
 #print("Positives = ",n_pos)
 print("total nos= ",ff)
 print(find_ones(n_pos))
@@ -119,12 +127,12 @@ print(find_ones(n_pos))
 
 # starting third round
 
-f = file_len('training_data.txt')/2
+f = file_len(args.train)/2
 
 #print(f)
 
 tweets = []
-for i,line in enumerate(open('training_data.txt')):
+for i,line in enumerate(open(args.train)):
     #print(i,f)
     words=re.split(' ',line)
     #print(i,f,words[0:len(words)-1])
@@ -142,7 +150,7 @@ word_features = get_word_features(get_words_in_tweets(tweets))
 training_set = nltk.classify.apply_features(extract_features, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 n_pos=[]
-for line in open('Raw_Tweets.txt'):
+for line in open(args.tweet):
     #print('Line is: ',line)
     out = classifier.classify(extract_features(line.split()))
     #print(out)
@@ -151,7 +159,7 @@ for line in open('Raw_Tweets.txt'):
     else:
         n_pos.append(-1)
 
-ff = file_len('Raw_Tweets.txt')
+ff = file_len(args.tweet)
 #print("Positives = ",n_pos)
 print("total nos= ",ff)
 print(find_ones(n_pos))

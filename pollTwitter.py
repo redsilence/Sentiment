@@ -12,7 +12,7 @@ consumer_secret = "ZlAKPOO1rl1objODHcwA45qIsSMxdqOux7FJsNXXbN2k1hoI5p"
 access_token = "304944155-u5BT348XsEpZgn7HldFS6WZBX2arnhPU1DxJt3It"
 access_token_secret = "kzM2i4YhRs2eunEmcoT8wdomQHp2l3VEwSc1WRAkkYqC3"
 
-track_string = 'JP Morgan'
+track_string = 'iPhone 6S'
 
 
 class TweetListener(StreamListener):
@@ -31,7 +31,7 @@ class TweetListener(StreamListener):
         print(status)
 
 if __name__ == '__main__':
-    filedesc = open("Raw_Tweets_JP_Morgan.txt", 'w')
+    filedesc = open("./generated data/Raw_Tweets_iPhone6S.txt", 'w')
     l = TweetListener(filedesc)
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)

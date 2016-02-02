@@ -82,6 +82,8 @@ targetCons = "cons noMargVert notranslate truncateThis wrapToggleStr'>";
 storefilePros = open("pros_trial.txt", 'w');
 storefileCons = open("cons_trial.txt", 'w');
 
+#Future fix: doesn't stop at the last page because Glassdoor returns an error message page when there is no more result
+#so responseHtml will never be None!
 while (responseHtml is not None):
     extractReviews(responseHtml, targetPros, startEntryNumPros + count, "positive");
     extractReviews(responseHtml, targetCons, startEntryNumCons + count, "");
